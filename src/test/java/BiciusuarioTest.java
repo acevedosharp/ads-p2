@@ -16,7 +16,7 @@ public class BiciusuarioTest {
     private final String id = "1";
 
     @Test
-    public void createSimpleBiciusuario() {
+    public void createBiciusuario() {
         Biciusuario biciusuario = new Biciusuario(correo, password, nombre, direccion, telefono, id);
 
         assertTrue(
@@ -29,7 +29,7 @@ public class BiciusuarioTest {
     }
 
     @Test
-    public void editSimpleBicicleta() {
+    public void editBiciusuario() {
         Biciusuario biciusuario = new Biciusuario(correo, password, nombre, direccion, telefono, id);
 
         String newCorreo =  "joseacpo@unisabana.edu.co";
