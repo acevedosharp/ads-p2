@@ -67,4 +67,16 @@ public class GestorProxyTest {
 
         assertTrue(l > 0 && res instanceof Empresa);
     }
+
+    @Test
+    public void biciusuarioCanDoRestricted() throws Exception {
+
+        GestorInteface gestor = new GestorProxy(GestorSingleton.build().consultarBiciusuario(biciusuario2Id));
+
+        gestor.ejecutarAccion("agregarBicicleta,"+biciusuario2Id+",s,m,c,e,m");
+
+        Biciusuario biciusuario = GestorSingleton.build().consultarBiciusuario(biciusuario2Id);
+
+        assertTrue(biciusuario.getBicicletas().size() > 0);
+    }
 }
