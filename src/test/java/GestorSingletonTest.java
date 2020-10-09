@@ -115,7 +115,7 @@ public class GestorSingletonTest {
         GestorSingleton.build().flushInstanceData();
 
         GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
-        boolean res = GestorSingleton.build().crearBiciusuario("uniqueNit", validEmail, validPassword, name, direccion, telefono);
+        boolean res = GestorSingleton.build().crearEmpresa("uniqueNit", validEmail, validPassword, name, direccion, telefono);
 
         assertTrue(res);
     }
@@ -200,6 +200,99 @@ public class GestorSingletonTest {
         GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
 
         boolean res = GestorSingleton.build().eliminarEmpresa("otherId");
+
+        assertFalse(res);
+    }
+
+
+    @Test
+    public void crearComposicionEmpresaEmpresaExitoso() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        String nit2 = "otherId";
+
+        GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
+        GestorSingleton.build().crearEmpresa(nit2, validEmail, validPassword, name, direccion, telefono);
+
+        boolean res = GestorSingleton.build().crearComposicionEmpresaEmpresa(nit, nit2);
+
+        assertTrue(res);
+    }
+
+    @Test
+    public void crearComposicionEmpresaEmpresaFallido() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        String nit2 = "otherId";
+
+        GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
+
+        boolean res = GestorSingleton.build().crearComposicionEmpresaEmpresa(nit, nit2);
+
+        assertFalse(res);
+    }
+
+    @Test
+    public void crearComposicionEmpresaEmpleadoExitoso() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
+        GestorSingleton.build().crearBiciusuario(id, validEmail, validPassword, name, direccion, telefono);
+
+        boolean res = GestorSingleton.build().crearComposicionEmpresaEmpleado(nit, id);
+
+        assertTrue(res);
+    }
+
+    @Test
+    public void crearComposicionEmpresaEmpleadoFallido() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
+
+        boolean res = GestorSingleton.build().crearComposicionEmpresaEmpleado(nit, id);
+
+        assertFalse(res);
+    }
+
+    @Test
+    public void eliminarComposicionEmpresaEmpleadoExitoso() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        GestorSingleton.build().crearEmpresa(nit, validEmail, validPassword, name, direccion, telefono);
+        GestorSingleton.build().crearBiciusuario(id, validEmail, validPassword, name, direccion, telefono);
+
+        GestorSingleton.build().crearComposicionEmpresaEmpleado(nit, id);
+
+        boolean res = GestorSingleton.build().eliminarComposicionEmpresaEmpleado(nit, id);
+
+        assertTrue(res);
+    }
+
+    @Test
+    public void eliminarComposicionEmpresaEmpleadoFallido() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        boolean res = GestorSingleton.build().eliminarComposicionEmpresaEmpleado(nit, id);
+
+        assertFalse(res);
+    }
+
+    @Test
+    public void agregarBicicletaExitoso() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        GestorSingleton.build().crearBiciusuario(id, validEmail, validPassword, name, direccion, telefono);
+        boolean res = GestorSingleton.build().agregarBicicleta(id, "XXX", "BMW", "amarillo", "antiguo", "madera");
+
+        assertTrue(res);
+    }
+
+    @Test
+    public void agregarBicicletaFallido() throws IllegalEmailException, IllegalPasswordException {
+        GestorSingleton.build().flushInstanceData();
+
+        boolean res = GestorSingleton.build().agregarBicicleta(id, "XXX", "BMW", "amarillo", "antiguo", "madera");
 
         assertFalse(res);
     }
