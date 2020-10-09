@@ -23,7 +23,7 @@ public class GestorProxy implements GestorInteface {
     }
 
     @Override
-    public void ejecutarAccion(String accion) throws WrongNumberOfParamsException {
+    public void ejecutarAccion(String accion) throws Exception {
         List<String> params = Arrays.asList(accion.split(","));
         String metodo = params.get(0);
 

@@ -1,6 +1,6 @@
 package entidades;
 
-public class User 
+public class User
 {
     protected String correo;
     protected String contrasena;

@@ -3,12 +3,10 @@ package gestor;
 import decorator.Bicicleta;
 import decorator.EdadDecorator;
 import decorator.MaterialDecorator;
-import entidades.BicicletaImpl;
-import entidades.Biciusuario;
-import entidades.Componente;
-import entidades.Empresa;
+import entidades.*;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class GestorSingleton {
 
@@ -24,9 +22,10 @@ public class GestorSingleton {
     }
 
 
-    public boolean crearBiciusuario(String id, String correo, String contrasena, String name, String direccion, String telefono) {
+    public boolean crearBiciusuario(String id, String correo, String contrasena, String name, String direccion, String telefono) throws IllegalEmailException, IllegalPasswordException {
+        enforceUserCreationRules(correo, contrasena);
         if (indexOf(id, "Biciusuario") == -1) {
-            componentes.add(new Biciusuario(correo, contrasena, id, name, direccion, telefono));
+            componentes.add(new Biciusuario(correo, contrasena, name, direccion, telefono, id));
             System.out.println("Se agregó el biciusuario con ID " + id);
             return true;
         } else {
@@ -43,7 +42,8 @@ public class GestorSingleton {
             return null;
         }
     }
-    public boolean actualizarBiciusuario(String id, String correo, String password, String nombre, String direccion, String telefono) {
+    public boolean actualizarBiciusuario(String id, String correo, String password, String nombre, String direccion, String telefono) throws IllegalEmailException, IllegalPasswordException {
+        enforceUserCreationRules(correo, password);
         int index = indexOf(id, "Biciusuario");
         if (index > -1) {
             ((Biciusuario) componentes.get(index)).setCorreo(correo);
@@ -69,7 +69,8 @@ public class GestorSingleton {
         }
     }
 
-    public boolean crearEmpresa(String nit, String correo, String contrasena, String nombre, String direccion, String telefono) {
+    public boolean crearEmpresa(String nit, String correo, String contrasena, String nombre, String direccion, String telefono) throws IllegalEmailException, IllegalPasswordException {
+        enforceUserCreationRules(correo, contrasena);
         if (indexOf(nit, "Empresa") == -1) {
             componentes.add(new Empresa(correo, contrasena, nombre, direccion, telefono, nit));
             System.out.println("Se agregó empresa con NIT " + nit);
@@ -89,7 +90,8 @@ public class GestorSingleton {
             return null;
         }
     }
-    public boolean actualizarEmpresa(String nit, String correo, String contrasena, String nombre, String direccion, String telefono) {
+    public boolean actualizarEmpresa(String nit, String correo, String contrasena, String nombre, String direccion, String telefono) throws IllegalEmailException, IllegalPasswordException {
+        enforceUserCreationRules(correo, contrasena);
         int index = indexOf(nit, "Empresa");
         if (index > -1) {
             ((Empresa) componentes.get(index)).setCorreo(correo);
@@ -181,6 +183,17 @@ public class GestorSingleton {
             System.out.println("El Id del biciusuario no existe");
             return false;
         }
+    }
+
+    private void enforceUserCreationRules(String email, String password) throws IllegalEmailException, IllegalPasswordException {
+        if (!Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$").matcher(email).matches())
+            throw new IllegalEmailException(email);
+        if (!Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").matcher(password).matches())
+            throw new IllegalPasswordException(password, "doesn't follow the rules of minimum eight characters, at least one letter and one number.");
+    }
+
+    public void flushInstanceData() {
+        componentes.clear();
     }
 
     private int indexOf(String identificador, String componente) {
