@@ -2,8 +2,8 @@ package entidades;
 
 public class Admin extends User implements Componente {
 
-    public Admin(String password, String correo) {
-        super(password, correo);
+    public Admin(String correo, String password) {
+        super(correo, password);
     }
 
 

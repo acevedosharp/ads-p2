@@ -1,6 +1,11 @@
+import entidades.Admin;
 import entidades.Biciusuario;
+import entidades.Componente;
+import entidades.Empresa;
 import gestor.*;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import proxy.GestorInteface;
 
 public class GestorProxyTest {
     private final String biciusuario1Id = "123";
@@ -48,5 +53,18 @@ public class GestorProxyTest {
         new GestorProxy(GestorSingleton.build().consultarBiciusuario(biciusuario1Id));
     }
 
+    @Test
+    public void adminCanDoAnything() throws Exception {
+        GestorInteface gestor = new GestorProxy(new Admin("movelo@hotmail.com", "Password123"));
 
+        gestor.ejecutarAccion("agregarBicicleta,"+biciusuario1Id+",s,m,c,e,m");
+
+        int l = GestorSingleton.build().consultarBiciusuario(biciusuario1Id).getBicicletas().size();
+
+        gestor.ejecutarAccion("crearComposicionEmpresaEmpresa,"+empresa1Nit+","+empresa2Nit);
+
+        Componente res = GestorSingleton.build().consultarEmpresa(empresa1Nit).getComponentes().get(0);
+
+        assertTrue(l > 0 && res instanceof Empresa);
+    }
 }

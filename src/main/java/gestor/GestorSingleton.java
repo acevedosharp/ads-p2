@@ -18,6 +18,7 @@ public class GestorSingleton {
         if (gestorSingleton == null) {
             gestorSingleton = new GestorSingleton();
         }
+        gestorSingleton.componentes.add(new Admin("movelo@hotmail.com", "Password123"));
         return gestorSingleton;
     }
 
